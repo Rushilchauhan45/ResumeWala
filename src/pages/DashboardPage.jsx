@@ -446,7 +446,7 @@ export default function DashboardPage() {
                 Welcome back, <span className="grad-text">{userName}! 👋</span>
               </h1>
               <p className="rw-body" style={{ fontSize: 14.5, color: 'rgba(255,255,255,0.42)', lineHeight: 1.6 }}>
-                Tera resume aaj kisi company mein pehunch sakta hai — build, enhance, download karo ₹9 mein.
+                Tera resume aaj kisi company mein pehunch sakta hai — build, enhance, download karo ₹19 mein.
               </p>
             </div>
             <button

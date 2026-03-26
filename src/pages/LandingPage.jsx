@@ -96,6 +96,7 @@ export default function LandingPage() {
   const [activeSection, setActiveSection] = useState('home')
   const [menuOpen, setMenuOpen] = useState(false)
   const [hoveredCard, setHoveredCard] = useState(null)
+  const [testimonialIndex, setTestimonialIndex] = useState(0)
   const { scrollY } = useScroll()
   const navBg = useTransform(scrollY, [0, 60], ['rgba(5,5,18,0)', 'rgba(5,5,18,0.96)'])
   const navBorder = useTransform(scrollY, [0, 60], ['rgba(255,255,255,0)', 'rgba(255,255,255,0.07)'])
@@ -128,7 +129,7 @@ export default function LandingPage() {
     { icon: '📐', tag: 'LaTeX Precision', title: 'The Format IITians & NITians Use', body: 'LaTeX-rendered, pixel-perfect PDFs. The same clean, scannable format that top candidates use to get into FAANG companies globally.', accent: '#F59E0B', glow: 'rgba(245,158,11,0.1)' },
     { icon: '🏆', tag: 'FAANG Templates', title: 'Designed from 10,000+ Hired Resumes', body: 'We studied successful resumes from Google, Meta, Amazon, Flipkart & Razorpay hires. Every template is a distillation of what actually works.', accent: '#F43F5E', glow: 'rgba(244,63,94,0.1)' },
     { icon: '⏱️', tag: '60-Second Build', title: 'Faster Than Writing Your Name', body: 'Upload your old resume → AI scans → AI rewrites → Professional PDF ready. The whole process takes less time than making chai.', accent: '#06B6D4', glow: 'rgba(6,182,212,0.1)' },
-    { icon: '💎', tag: 'Transparent Pricing', title: 'Less Than a Samosa. Seriously.', body: 'No subscription. No trial. No upsells. Build free, preview free, pay ₹9 only when you download. We succeed only when you get hired.', accent: '#10B981', glow: 'rgba(16,185,129,0.1)' },
+    { icon: '💎', tag: 'Transparent Pricing', title: 'Less Than a Samosa. Seriously.', body: 'No subscription. No trial. No upsells. Build free, preview free, pay ₹19 only when you download. We succeed only when you get hired.', accent: '#10B981', glow: 'rgba(16,185,129,0.1)' },
   ]
 
   const steps = [
@@ -136,15 +137,26 @@ export default function LandingPage() {
     { num: '02', title: 'Upload or Build Fresh', body: 'Drop your old resume OR fill our guided 5-section smart form. Both paths take under 3 minutes.', accent: '#8B5CF6' },
     { num: '03', title: 'Groq AI Enhances Everything', body: 'Keywords, formatting, bullet points, impact statements — AI rewrites every single line with precision.', accent: '#06B6D4' },
     { num: '04', title: 'Live ATS Score Reveal', body: 'Watch your score jump in real-time. See exactly what changed. Before vs after — completely transparent.', accent: '#00DC82' },
-    { num: '05', title: 'Preview Free. Pay ₹9. Download.', body: 'See the complete final resume before paying a single rupee. Zero risk. Pay only when you love it.', accent: '#F59E0B' },
+    { num: '05', title: 'Preview Free. Pay ₹19. Download.', body: 'See the complete final resume before paying a single rupee. Zero risk. Pay only when you love it.', accent: '#F59E0B' },
   ]
 
   const testimonials = [
     { name: 'Rahul Mehta', role: 'SDE-2 at Amazon', before: 29, after: 97, quote: '6 mahine se rejections aa rahi thi. ResumeWala ne ek din mein sab badal diya. Amazon offer aaya aur main roya.', initials: 'RM', color: '#FF9900' },
-    { name: 'Priya Iyer', role: 'Software Engineer, Google', before: 31, after: 95, quote: 'Fresher thi, kuch samajh nahi aata tha. ₹9 mein itna powerful resume? This is genuinely unreal. Google interview aya.', initials: 'PI', color: '#4285F4' },
+    { name: 'Priya Iyer', role: 'Software Engineer, Google', before: 31, after: 95, quote: 'Fresher thi, kuch samajh nahi aata tha. ₹19 mein itna powerful resume? This is genuinely unreal. Google interview aya.', initials: 'PI', color: '#4285F4' },
     { name: 'Karan Sharma', role: 'Data Analyst, Microsoft', before: 44, after: 96, quote: 'Tried Zety, Novoresume, Resume.io — nothing worked. One upload here and Microsoft shortlisted me in 4 days.', initials: 'KS', color: '#00A4EF' },
     { name: 'Ananya Das', role: 'Product Manager, Razorpay', before: 38, after: 94, quote: 'Non-tech background entering product. The AI understood context I never even wrote. Genuinely shocked by the output.', initials: 'AD', color: '#2D9CDB' },
+    { name: 'Sneha Kulkarni', role: 'UX Designer, Swiggy', before: 37, after: 93, quote: 'Food-tech portfolio ko kaise polish karu yeh samajh nahi aa raha tha. ResumeWala ne meri case studies ko aise rephrase kiya ki Swiggy design panel seedha shortlist kar gaya.', initials: 'SK', color: '#FF6B6B' },
+    { name: 'Mohammed Faizal', role: 'Cloud Architect, Flipkart', before: 46, after: 98, quote: 'Infra projects ko quantify karna impossible lagta tha. Yeh tool ne har bullet ko numbers se fill kar diya. Flipkart ne pehle hi round mein hire kar liya.', initials: 'MF', color: '#F97316' },
+    { name: 'Neha Thomas', role: 'Product Marketing, Freshworks', before: 41, after: 95, quote: 'Marketing ke liye story telling sab kuch hota hai. Groq AI ne meri GTM wins ko itna crisp banaya ki hiring manager ne call par hi compliment diya.', initials: 'NT', color: '#EC4899' },
+    { name: 'Rohan Patel', role: 'Data Scientist, Paytm', before: 34, after: 96, quote: 'Mera resume pehle Excel report jaisa lagta tha. ResumeWala ne models + impact ko highlight kiya aur Paytm Labs ne bina referrals ke shortlist kar diya.', initials: 'RP', color: '#3B82F6' },
+    { name: 'Ishita Verma', role: 'Business Analyst, McKinsey', before: 52, after: 97, quote: 'Consulting ke liye frameworks aur numbers zaroori hote hain. Yeh platform ne mere NGO work ko bhi ROI language mein convert kar diya. Final round crack ho gaya.', initials: 'IV', color: '#0EA5E9' },
+    { name: 'Devansh Gupta', role: 'Hardware Engineer, Nvidia', before: 33, after: 92, quote: 'ECE projects ko English mein explain karna mere liye struggle tha. AI rewrites ne meri VLSI internship ko Hollywood trailer bana diya. Nvidia offer secure.', initials: 'DG', color: '#22C55E' },
   ]
+
+  const totalTestimonials = testimonials.length
+  const activeTestimonial = testimonials[testimonialIndex]
+  const handlePrevTestimonial = () => setTestimonialIndex(i => (i - 1 + totalTestimonials) % totalTestimonials)
+  const handleNextTestimonial = () => setTestimonialIndex(i => (i + 1) % totalTestimonials)
 
   return (
     <div style={{ background: '#050512', color: 'white', minHeight: '100vh', overflowX: 'hidden', fontFamily: "'Outfit', sans-serif" }}>
@@ -182,6 +194,18 @@ export default function LandingPage() {
         .feat-card:hover { transform: translateY(-8px) scale(1.01); border-color: rgba(255,255,255,0.13); background: rgba(255,255,255,0.04); }
         .testi-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 22px; transition: all 0.3s ease; }
         .testi-card:hover { transform: translateY(-5px); background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.1); }
+        .testi-carousel { position: relative; padding: 52px 48px 72px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.06); background: radial-gradient(circle at top, rgba(255,255,255,0.06), rgba(5,5,18,0.8)); overflow: hidden; }
+        .testi-carousel::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(circle at 20% 0%, rgba(99,102,241,0.15), transparent 55%); opacity: 0.4; }
+        .testi-carousel-inner { position: relative; max-width: 720px; margin: 0 auto; min-height: 320px; }
+        .testi-arrow { position: absolute; top: 50%; transform: translateY(-50%); width: 50px; height: 50px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.12); background: rgba(5,5,18,0.6); color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.25s; z-index: 2; backdrop-filter: blur(12px); }
+        .testi-arrow:hover { border-color: rgba(255,255,255,0.3); background: rgba(99,102,241,0.2); color: white; }
+        .testi-arrow.left { left: 18px; }
+        .testi-arrow.right { right: 18px; }
+        .testi-meta { margin-top: 36px; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 18px; }
+        .testi-count { font-size: 13px; letter-spacing: 0.2em; color: rgba(255,255,255,0.35); text-transform: uppercase; font-weight: 700; }
+        .testi-pagination { display: flex; gap: 10px; }
+        .testi-dot { width: 32px; height: 6px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); cursor: pointer; transition: all 0.25s; }
+        .testi-dot.active { background: linear-gradient(135deg, #00DC82, #36E4DA); border-color: transparent; width: 48px; }
 
         /* Pill label */
         .section-pill { display: inline-flex; align-items: center; gap: 7px; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 14px; border-radius: 100px; font-family: 'Plus Jakarta Sans', sans-serif; }
@@ -211,6 +235,9 @@ export default function LandingPage() {
           .feat-grid { grid-template-columns: 1fr !important; }
           .steps-max { max-width: 100% !important; }
           .testi-grid { grid-template-columns: 1fr !important; }
+          .testi-carousel { padding: 32px 24px 64px !important; }
+          .testi-arrow { display: none !important; }
+          .testi-carousel-inner { min-height: unset !important; }
           .pricing-inner { padding: 32px 24px !important; }
           .footer-inner { flex-direction: column !important; align-items: flex-start !important; gap: 24px !important; }
           .score-compare { grid-template-columns: 1fr !important; }
@@ -332,7 +359,7 @@ export default function LandingPage() {
           <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55, delay: 0.1 }}
             style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.09)', borderRadius: 100, padding: '7px 18px 7px 7px', marginBottom: 32, backdropFilter: 'blur(16px)' }}>
             <div style={{ background: 'linear-gradient(135deg, #6366F1, #4F46E5)', borderRadius: 100, padding: '3px 10px', fontSize: 10.5, fontWeight: 700, color: 'white', letterSpacing: '0.06em' }}>NEW</div>
-            <span className="rw-body" style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', fontWeight: 600 }}>Groq AI · 94–97% ATS Score · Only ₹9</span>
+            <span className="rw-body" style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', fontWeight: 600 }}>Groq AI · 94–97% ATS Score · Only ₹19</span>
           </motion.div>
 
           {/* H1 */}
@@ -349,7 +376,7 @@ export default function LandingPage() {
             className="rw-body hero-sub" style={{ fontSize: 18.5, color: 'rgba(255,255,255,0.48)', maxWidth: 600, margin: '0 auto 44px', lineHeight: 1.75, fontWeight: 400 }}>
             Students aur freshers ke liye India ka most powerful AI resume builder. Upload karo,{' '}
             <span style={{ color: 'rgba(255,255,255,0.88)', fontWeight: 700 }}>94–97% ATS score guaranteed</span>,
-            download for just <span className="grad-warm" style={{ fontWeight: 900, fontFamily: "'Outfit', sans-serif" }}>₹9</span>.
+            download for just <span className="grad-warm" style={{ fontWeight: 900, fontFamily: "'Outfit', sans-serif" }}>₹19</span>.
           </motion.p>
 
           {/* CTAs */}
@@ -375,7 +402,7 @@ export default function LandingPage() {
               { value: 12847, suffix: '+', label: 'Resumes Built', icon: '📄', color: '#818CF8' },
               { value: 8392, suffix: '+', label: 'Users Hired', icon: '🎯', color: '#00DC82' },
               { value: 96, suffix: '%', label: 'Avg ATS Score', icon: '⚡', color: '#F59E0B' },
-              { value: 9, prefix: '₹', suffix: '', label: 'One-time Price', icon: '💎', color: '#F43F5E' },
+              { value: 19, prefix: '₹', suffix: '', label: 'One-time Price', icon: '💎', color: '#F43F5E' },
             ].map((s, i) => (
               <motion.div key={i} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.6 + i * 0.08, duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }}
                 style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 18, padding: '18px 10px', textAlign: 'center', backdropFilter: 'blur(12px)' }}>
@@ -544,30 +571,66 @@ export default function LandingPage() {
             </h2>
           </motion.div>
 
-          <div className="testi-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14 }}>
-            {testimonials.map((t, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                className="testi-card" style={{ padding: '24px', position: 'relative', overflow: 'hidden' }}>
-                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(to right, ${t.color}80, ${t.color}20)` }} />
-                <div style={{ display: 'flex', gap: 2, marginBottom: 14 }}>
-                  {Array(5).fill(0).map((_, j) => (
-                    <svg key={j} width="12" height="12" viewBox="0 0 12 12" fill="#F59E0B"><path d="M6 1l1.2 3.2H10L7.4 6.4l.9 3.3L6 7.8 3.7 9.7l.9-3.3L2 4.2h2.8L6 1z"/></svg>
-                  ))}
-                </div>
-                <p className="rw-body" style={{ fontSize: 14, color: 'rgba(255,255,255,0.52)', lineHeight: 1.75, marginBottom: 18, fontStyle: 'italic' }}>"{t.quote}"</p>
-                <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
-                  <div style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.15)', borderRadius: 8, padding: '5px 10px', fontSize: 12, color: '#F87171', fontWeight: 700 }}>Before: {t.before}%</div>
-                  <div style={{ background: 'rgba(0,220,130,0.08)', border: '1px solid rgba(0,220,130,0.18)', borderRadius: 8, padding: '5px 10px', fontSize: 12, color: '#34D399', fontWeight: 700 }}>After: {t.after}%</div>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10, paddingTop: 14, borderTop: '1px solid rgba(255,255,255,0.05)' }}>
-                  <div style={{ width: 36, height: 36, borderRadius: '50%', background: `${t.color}18`, border: `1px solid ${t.color}35`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 700, color: t.color, flexShrink: 0 }}>{t.initials}</div>
-                  <div>
-                    <div className="rw-display" style={{ fontSize: 13.5, letterSpacing: '-0.03em' }}>{t.name}</div>
-                    <div className="rw-body" style={{ fontSize: 11.5, color: 'rgba(255,255,255,0.28)', marginTop: 1 }}>{t.role}</div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
+          <div className="testi-carousel">
+            <button type="button" className="testi-arrow left" onClick={handlePrevTestimonial} aria-label="Previous testimonial">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <path d="M11 4l-5 5 5 5" stroke="white" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+            <button type="button" className="testi-arrow right" onClick={handleNextTestimonial} aria-label="Next testimonial">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <path d="M7 4l5 5-5 5" stroke="white" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+
+            <div className="testi-carousel-inner">
+              <AnimatePresence mode="wait">
+                {activeTestimonial && (
+                  <motion.div key={activeTestimonial.name}
+                    initial={{ opacity: 0, x: 40 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -40 }}
+                    transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                    className="testi-card"
+                    style={{ padding: '34px 36px', position: 'relative', overflow: 'hidden', minHeight: 320 }}>
+                    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(to right, ${activeTestimonial.color}99, transparent)` }} />
+                    <div style={{ display: 'flex', gap: 4, marginBottom: 18 }}>
+                      {Array(5).fill(0).map((_, j) => (
+                        <svg key={j} width="14" height="14" viewBox="0 0 12 12" fill="#FBBF24"><path d="M6 1l1.2 3.2H10L7.4 6.4l.9 3.3L6 7.8 3.7 9.7l.9-3.3L2 4.2h2.8L6 1z"/></svg>
+                      ))}
+                    </div>
+                    <p className="rw-body" style={{ fontSize: 16, color: 'rgba(255,255,255,0.7)', lineHeight: 1.9, marginBottom: 24, fontStyle: 'italic' }}>&ldquo;{activeTestimonial.quote}&rdquo;</p>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginBottom: 22 }}>
+                      <div style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.18)', borderRadius: 999, padding: '6px 16px', fontSize: 13, color: '#F87171', fontWeight: 700 }}>Before {activeTestimonial.before}%</div>
+                      <div style={{ background: 'rgba(0,220,130,0.08)', border: '1px solid rgba(0,220,130,0.2)', borderRadius: 999, padding: '6px 16px', fontSize: 13, color: '#34D399', fontWeight: 700 }}>After {activeTestimonial.after}%</div>
+                      <div style={{ background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.2)', borderRadius: 999, padding: '6px 16px', fontSize: 13, color: '#A5B4FC', fontWeight: 700 }}>+{activeTestimonial.after - activeTestimonial.before} pts</div>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: 18 }}>
+                      <div style={{ width: 48, height: 48, borderRadius: '50%', background: `${activeTestimonial.color}18`, border: `1px solid ${activeTestimonial.color}35`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, fontWeight: 700, color: activeTestimonial.color }}>{activeTestimonial.initials}</div>
+                      <div style={{ flex: 1 }}>
+                        <div className="rw-display" style={{ fontSize: 18, letterSpacing: '-0.03em' }}>{activeTestimonial.name}</div>
+                        <div className="rw-body" style={{ fontSize: 13, color: 'rgba(255,255,255,0.4)' }}>{activeTestimonial.role}</div>
+                      </div>
+                      <div style={{ textAlign: 'right' }}>
+                        <div className="rw-body" style={{ fontSize: 12, color: 'rgba(255,255,255,0.35)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>ATS Score</div>
+                        <div className="rw-display" style={{ fontSize: 24, background: 'linear-gradient(135deg, #00DC82, #36E4DA)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>{activeTestimonial.after}%</div>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            <div className="testi-meta">
+              <div className="testi-count">{String(testimonialIndex + 1).padStart(2, '0')} / {String(totalTestimonials).padStart(2, '0')}</div>
+              <div className="testi-pagination">
+                {testimonials.map((_, idx) => (
+                  <button key={idx} type="button" aria-label={`Show testimonial ${idx + 1}`}
+                    className={`testi-dot ${idx === testimonialIndex ? 'active' : ''}`}
+                    onClick={() => setTestimonialIndex(idx)} />
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -581,9 +644,9 @@ export default function LandingPage() {
               Simple Pricing
             </div>
             <h2 className="rw-display" style={{ fontSize: 'clamp(34px,5vw,58px)', marginBottom: 16, lineHeight: 1.04 }}>
-              Less Than a Samosa.<br /><span className="grad-warm">₹9. Period.</span>
+              Less Than a Samosa.<br /><span className="grad-warm">₹19. Period.</span>
             </h2>
-            <p className="rw-body" style={{ fontSize: 17, color: 'rgba(255,255,255,0.38)', maxWidth: 480, margin: '0 auto', lineHeight: 1.7 }}>No subscription. No trial. Build free, preview free, pay ₹9 only when you download your final PDF.</p>
+            <p className="rw-body" style={{ fontSize: 17, color: 'rgba(255,255,255,0.38)', maxWidth: 480, margin: '0 auto', lineHeight: 1.7 }}>No subscription. No trial. Build free, preview free, pay ₹19 only when you download your final PDF.</p>
           </motion.div>
 
           <motion.div initial={{ opacity: 0, y: 36, scale: 0.97 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
@@ -598,7 +661,7 @@ export default function LandingPage() {
               </div>
 
               <div style={{ marginBottom: 10 }}>
-                <span className="rw-display" style={{ fontSize: 108, lineHeight: 1, background: 'linear-gradient(135deg, #00DC82, #36E4DA)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', letterSpacing: '-0.05em' }}>₹9</span>
+                <span className="rw-display" style={{ fontSize: 108, lineHeight: 1, background: 'linear-gradient(135deg, #00DC82, #36E4DA)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', letterSpacing: '-0.05em' }}>₹19</span>
               </div>
               <p className="rw-body" style={{ color: 'rgba(255,255,255,0.3)', fontSize: 15, marginBottom: 40 }}>One-time · Per resume download · No tricks, ever</p>
 
@@ -616,7 +679,7 @@ export default function LandingPage() {
                 Start Building — It's Free
                 <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M3 7.5h9M9 4.5l3 3-3 3" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </MagneticBtn>
-              <p className="rw-body" style={{ color: 'rgba(255,255,255,0.17)', fontSize: 12.5, marginTop: 16 }}>No credit card needed · Preview 100% free · Pay ₹9 only at download</p>
+              <p className="rw-body" style={{ color: 'rgba(255,255,255,0.17)', fontSize: 12.5, marginTop: 16 }}>No credit card needed · Preview 100% free · Pay ₹19 only at download</p>
             </div>
           </motion.div>
         </div>
@@ -632,7 +695,7 @@ export default function LandingPage() {
               Stop Getting Filtered Out.<br /><span className="grad-text">Start Getting Interviews.</span>
             </h2>
             <p className="rw-body" style={{ color: 'rgba(255,255,255,0.4)', fontSize: 16, marginBottom: 32, maxWidth: 480, margin: '0 auto 32px', lineHeight: 1.7 }}>
-              12,847 resumes built · 8,392 users hired · One platform · ₹9
+              12,847 resumes built · 8,392 users hired · One platform · ₹19
             </p>
             <button onClick={() => navigate('/auth?mode=signup')} className="btn-p"
               style={{ padding: '16px 42px', fontSize: 16, display: 'inline-flex', alignItems: 'center', gap: 10 }}>

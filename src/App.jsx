@@ -5,6 +5,7 @@ import LandingPage from './pages/LandingPage'
 import AuthPage from './pages/AuthPage'
 import DashboardPage from './pages/DashboardPage'
 import BuilderPage from './pages/BuilderPage'
+import UploadPage from './pages/UploadPage'
 import ProtectedRoute from './components/ProtectedRoute'
 
 function App() {
@@ -32,6 +33,11 @@ function App() {
           <Route path="/builder" element={
             <ProtectedRoute>
               <BuilderPage />
+            </ProtectedRoute>
+          } />
+          <Route path="/upload" element={
+            <ProtectedRoute>
+              <UploadPage />
             </ProtectedRoute>
           } />
           <Route path="*" element={<Navigate to="/" />} />

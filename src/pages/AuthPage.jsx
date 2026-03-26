@@ -83,7 +83,7 @@ export default function AuthPage() {
     { icon: '⚡', text: 'Groq AI-powered enhancement' },
     { icon: '🎯', text: '94–97% ATS score guaranteed' },
     { icon: '📐', text: 'LaTeX professional PDF output' },
-    { icon: '💎', text: 'Only ₹9 to download — no subscription' },
+    { icon: '💎', text: 'Only ₹19 to download — no subscription' },
   ]
 
   return (
@@ -187,7 +187,7 @@ export default function AuthPage() {
               {Array(5).fill(0).map((_,i) => <svg key={i} width="12" height="12" viewBox="0 0 12 12" fill="#F59E0B"><path d="M6 1l1.2 3.2H10L7.4 6.4l.9 3.3L6 7.8 3.7 9.7l.9-3.3L2 4.2h2.8L6 1z"/></svg>)}
             </div>
             <p className="rw-body" style={{ fontSize: 13.5, color: 'rgba(255,255,255,0.5)', lineHeight: 1.7, fontStyle: 'italic', marginBottom: 12 }}>
-              "My ATS score went from 31% to 95%. Got Google's call within 2 weeks. Best ₹9 I ever spent."
+              "My ATS score went from 31% to 95%. Got Google's call within 2 weeks. Best ₹19 I ever spent."
             </p>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <div style={{ width: 30, height: 30, borderRadius: '50%', background: 'rgba(66,133,244,0.2)', border: '1px solid rgba(66,133,244,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 700, color: '#4285F4' }}>PI</div>
