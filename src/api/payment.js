@@ -1,3 +1,50 @@
+/**
+ * Payment helpers are temporarily paused (free beta phase).
+ * We expose no-op stubs so existing imports won't break, and
+ * keep the full Razorpay implementation commented below for quick reactivation.
+ */
+
+export const PAYMENT_STATUS = {
+  IDLE: 'idle',
+  LOADING: 'loading',
+  SUCCESS: 'success',
+  FAILED: 'failed',
+  DISMISSED: 'dismissed',
+}
+
+export const getPaymentStatusMessage = () => ''
+
+const logDisabled = () => {
+  if (import.meta.env?.DEV) {
+    console.warn('[payment] Payment flow is disabled during beta. Skipping request.')
+  }
+}
+
+export const initiatePayment = async () => {
+  logDisabled()
+  return { disabled: true }
+}
+
+export const devModePayment = initiatePayment
+export const smartPay = initiatePayment
+
+export const savePaymentRecord = () => {}
+export const getPaymentHistory = () => []
+export const hasUserPaid = () => true
+export const clearPaymentHistory = () => {}
+
+export default {
+  initiatePayment,
+  smartPay,
+  devModePayment,
+  hasUserPaid,
+  getPaymentHistory,
+  savePaymentRecord,
+  PAYMENT_STATUS,
+  getPaymentStatusMessage,
+}
+
+/*
 // ─────────────────────────────────────────────────────────────
 //  ResumeWala — Payment API
 //  Razorpay integration for ₹9 resume download
@@ -272,3 +319,5 @@ export default {
   PAYMENT_STATUS,
   getPaymentStatusMessage,
 }
+
+*/

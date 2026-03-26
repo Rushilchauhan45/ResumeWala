@@ -8,7 +8,8 @@ import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAuth } from '../../context/AuthContext'
 import { scoreFromUploadedText, fullEnhanceFlow, getSectionScores, getScoreColor, getScoreLabel } from '../../api/atsScore'
-import Payment from '../payment/Payment'
+import toast from 'react-hot-toast'
+import { downloadResumePdf } from '../../utils/pdfDownloader'
 
 // ─────────────────────────────────────────────────────────────
 //  ATS SCORE RING
@@ -78,9 +79,9 @@ export default function UploadResume() {
   const [enhancedData, setEnhancedData] = useState(null)
   const [afterScore, setAfterScore] = useState(null)
   const [progress, setProgress] = useState({ percent: 0, message: '' })
-  const [showPayment, setShowPayment] = useState(false)
   const [jobDescription, setJobDescription] = useState('')
   const [error, setError] = useState('')
+  const [downloading, setDownloading] = useState(false)
 
   // ── Extract text from file ──
   const extractText = async (file) => {
@@ -182,11 +183,34 @@ export default function UploadResume() {
     setStage('preview')
   }
 
-  // ── Payment success ──
-  const handlePaymentSuccess = () => {
-    setShowPayment(false)
-    // Navigate to builder with enhanced data for PDF download
-    navigate('/builder', { state: { resumeData: enhancedData, fromUpload: true, paid: true } })
+  // ── Download enhanced resume ──
+  const handleDownload = async () => {
+    if (!enhancedData) {
+      toast.error('Resume data missing — please re-run enhancement.')
+      return
+    }
+
+    const fileNameBase = enhancedData?.personalInfo?.fullName
+      ? enhancedData.personalInfo.fullName.toLowerCase().replace(/[^a-z0-9]+/gi, '-').replace(/^-+|-+$/g, '')
+      : (uploadedFile?.name?.replace(/\.[^.]+$/, '') || 'enhanced-resume')
+
+    setDownloading(true)
+    toast.loading('Generating your PDF...', { id: 'rw-download' })
+
+    const downloadResult = await downloadResumePdf({
+      resumeData: enhancedData,
+      fileName: fileNameBase || 'resume-wala',
+    })
+
+    if (downloadResult.success) {
+      toast.success('Resume downloaded. Check your Downloads folder!', { id: 'rw-download' })
+    } else if (downloadResult.fallback) {
+      toast.error(downloadResult.message || 'PDF service unavailable. We saved the LaTeX file instead.', { id: 'rw-download' })
+    } else {
+      toast.error(downloadResult.error || 'Could not generate PDF. Please contact support.', { id: 'rw-download' })
+    }
+
+    setDownloading(false)
   }
 
   const sectionScores = scoreResult ? getSectionScores(scoreResult) : []
@@ -224,7 +248,7 @@ export default function UploadResume() {
             Upload Your Resume<br /><span className="grad-text">Get Instant ATS Score</span>
           </h1>
           <p className="rw-body" style={{ fontSize: 16, color: 'rgba(255,255,255,0.4)', lineHeight: 1.7 }}>
-            Drop your old resume → AI scans it → Get your real ATS score → Enhance for ₹19
+            Drop your old resume → AI scans it → Get your real ATS score → Enhance & download instantly (beta is free)
           </p>
         </motion.div>
 
@@ -383,7 +407,7 @@ export default function UploadResume() {
                     <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                       <span style={{ fontSize: 20, marginBottom: 6 }}>🔒</span>
                       <div className="rw-display" style={{ fontSize: 14, marginBottom: 4 }}>{scoreResult.lockedIssues.length} more issues hidden</div>
-                      <div className="rw-body" style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)' }}>AI fixes ALL of them automatically for ₹19</div>
+                      <div className="rw-body" style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)' }}>AI fixes ALL of them automatically — unlock during free beta</div>
                     </div>
                   </div>
                 )}
@@ -414,7 +438,7 @@ export default function UploadResume() {
               </div>
 
               <p className="rw-body" style={{ textAlign: 'center', fontSize: 12.5, color: 'rgba(255,255,255,0.22)', marginTop: 12 }}>
-                Preview is 100% free — pay ₹19 only when you download
+                Preview & download are 100% free during the beta launch
               </p>
             </motion.div>
           )}
@@ -504,36 +528,35 @@ export default function UploadResume() {
                 </div>
 
                 <div style={{ textAlign: 'center', marginTop: 12 }}>
-                  <span style={{ fontSize: 20 }}>🔒</span>
-                  <span className="rw-body" style={{ fontSize: 13, color: 'rgba(255,255,255,0.35)', marginLeft: 8 }}>Full resume unlocks after ₹19 payment</span>
+                  <span style={{ fontSize: 20 }}>✨</span>
+                  <span className="rw-body" style={{ fontSize: 13, color: 'rgba(255,255,255,0.35)', marginLeft: 8 }}>Full resume unlocks instantly—downloads are free during beta</span>
                 </div>
               </div>
 
               {/* CTA */}
-              <button onClick={() => setShowPayment(true)} className="btn-primary"
-                style={{ width: '100%', padding: '18px', fontSize: 17, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, marginBottom: 12 }}>
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 3v10M5 10l5 5 5-5" stroke="white" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" /><path d="M3 16h14" stroke="white" strokeWidth="1.7" strokeLinecap="round" /></svg>
-                Download Full Resume — ₹19 Only
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M8 4l3 3-3 3" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+              <button onClick={handleDownload} disabled={downloading}
+                className="btn-primary"
+                style={{ width: '100%', padding: '18px', fontSize: 17, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, marginBottom: 12, opacity: downloading ? 0.7 : 1 }}>
+                {downloading ? (
+                  <>
+                    <motion.span animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: 'linear' }} style={{ width: 18, height: 18, border: '2px solid rgba(255,255,255,0.3)', borderTopColor: 'white', borderRadius: '50%' }} />
+                    Preparing your PDF...
+                  </>
+                ) : (
+                  <>
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 3v10M5 10l5 5 5-5" stroke="white" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" /><path d="M3 16h14" stroke="white" strokeWidth="1.7" strokeLinecap="round" /></svg>
+                    Download Enhanced Resume — Free Beta
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M8 4l3 3-3 3" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                  </>
+                )}
               </button>
               <p className="rw-body" style={{ textAlign: 'center', fontSize: 12.5, color: 'rgba(255,255,255,0.2)' }}>
-                One-time payment · No subscription · Instant PDF download
+                Limited-time beta · No payment required · Instant PDF download
               </p>
             </motion.div>
           )}
         </AnimatePresence>
 
-        {/* Payment Modal */}
-        <AnimatePresence>
-          {showPayment && (
-            <Payment
-              user={user}
-              resumeTitle={uploadedFile?.name || 'Enhanced Resume'}
-              onSuccess={handlePaymentSuccess}
-              onClose={() => setShowPayment(false)}
-            />
-          )}
-        </AnimatePresence>
       </div>
     </div>
   )

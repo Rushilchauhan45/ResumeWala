@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import toast from 'react-hot-toast'
 import { useAuth } from '../context/AuthContext'
+import BrandLogo from '../components/BrandLogo'
 
 /* ─────────────────────────────────────────
    STAT CARD
@@ -299,27 +300,7 @@ export default function DashboardPage() {
         }}
       >
         {/* Logo */}
-        <div onClick={() => navigate('/')} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 10 }}>
-          <div style={{ filter: 'drop-shadow(0 0 10px rgba(99,102,241,0.55))' }}>
-            <svg width="34" height="34" viewBox="0 0 42 42" fill="none">
-              <rect width="42" height="42" rx="12" fill="url(#dlg1)"/>
-              <rect x="10" y="8" width="16" height="20" rx="3" fill="rgba(255,255,255,0.93)"/>
-              <rect x="13" y="13" width="10" height="1.5" rx="0.75" fill="#6366F1" opacity="0.7"/>
-              <rect x="13" y="16.5" width="10" height="1.5" rx="0.75" fill="#6366F1" opacity="0.5"/>
-              <rect x="13" y="20" width="6" height="1.5" rx="0.75" fill="#6366F1" opacity="0.3"/>
-              <circle cx="28" cy="28" r="9.5" fill="#050512"/>
-              <circle cx="28" cy="28" r="8" fill="url(#dlg2)"/>
-              <path d="M24.5 28l2.5 2.5 4.5-5" stroke="white" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
-              <defs>
-                <linearGradient id="dlg1" x1="0" y1="0" x2="42" y2="42" gradientUnits="userSpaceOnUse"><stop stopColor="#6366F1"/><stop offset="1" stopColor="#4338CA"/></linearGradient>
-                <linearGradient id="dlg2" x1="20" y1="20" x2="36" y2="36" gradientUnits="userSpaceOnUse"><stop stopColor="#00DC82"/><stop offset="1" stopColor="#059669"/></linearGradient>
-              </defs>
-            </svg>
-          </div>
-          <div className="rw-display" style={{ fontSize: 18, background: 'linear-gradient(135deg, #fff 40%, rgba(255,255,255,0.65))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-            Resume<span style={{ background: 'linear-gradient(135deg, #A5B4FC, #6366F1)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Wala</span>
-          </div>
-        </div>
+        <BrandLogo size={52} onClick={() => navigate('/')} />
 
         {/* Center tabs */}
         <div style={{ display: 'flex', gap: 4, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 13, padding: 4 }}>
@@ -451,7 +432,7 @@ export default function DashboardPage() {
                 Welcome back, <span className="grad-text">{userName}! 👋</span>
               </h1>
               <p className="rw-body" style={{ fontSize: 14.5, color: 'rgba(255,255,255,0.42)', lineHeight: 1.6 }}>
-                Tera resume aaj kisi company mein pehunch sakta hai — build, enhance, download karo ₹19 mein.
+                Tera resume aaj kisi company mein pehunch sakta hai — build, enhance, download karo totally free beta mein.
               </p>
             </div>
             <button
@@ -480,7 +461,7 @@ export default function DashboardPage() {
             <StatCard icon="📄" label="Total Resumes" value={resumes.length} accent="#818CF8" delay={0.1} />
             <StatCard icon="⚡" label="Avg ATS Score" value={resumes.length ? Math.round(resumes.reduce((a, r) => a + r.atsScore, 0) / resumes.length) + '%' : '—'} accent="#00DC82" delay={0.15} />
             <StatCard icon="📥" label="Downloaded" value={resumes.filter(r => r.downloaded).length} accent="#F59E0B" delay={0.2} />
-            <StatCard icon="💎" label="Saved vs Zety" value="₹490" accent="#F43F5E" delay={0.25} />
+            <StatCard icon="💎" label="Beta Pricing" value="Free" accent="#F43F5E" delay={0.25} />
           </div>
 
           {/* Quick Actions */}

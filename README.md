@@ -67,14 +67,27 @@ src/
 | --- | --- |
 | `VITE_SUPABASE_URL` | Supabase project URL (`https://<project-ref>.supabase.co`) |
 | `VITE_SUPABASE_ANON_KEY` | Public anon key from Supabase settings |
-| `VITE_GROQ_API_KEY` | API key from [console.groq.com](https://console.groq.com) |
+| `VITE_GROQ_API_KEY` | Client-side Groq key (used only for optional builder helpers) |
+| `VITE_RAZORPAY_KEY_ID` | Publishable Razorpay key ID (for checkout modal) |
+| `GROQ_API_KEY` | **Serverless** Groq key used inside `/api/enhance-resume` |
+| `RAZORPAY_KEY_ID` | Razorpay key ID for serverless order creation/verification |
+| `RAZORPAY_KEY_SECRET` | Razorpay secret used to sign/verify payments |
 
 Create a `.env` (or configure them in Vercel) with:
 ```
 VITE_SUPABASE_URL=your-project-ref.supabase.co
 VITE_SUPABASE_ANON_KEY=anon-key-from-supabase
 VITE_GROQ_API_KEY=groq_api_key
+VITE_RAZORPAY_KEY_ID=rzp_live_xxx
+
+# Serverless (Vercel Dashboard → Environment Variables)
+GROQ_API_KEY=groq_api_key
+RAZORPAY_KEY_ID=rzp_live_xxx
+RAZORPAY_KEY_SECRET=your_secret
 ```
+
+- `/api/enhance-resume` and `/api/generate-pdf` run on Vercel’s Node runtime, so keep those keys on the server only.
+- `VITE_RAZORPAY_KEY_ID` is safe to expose on the client (it’s publishable) but never ship the secret to the browser.
 
 - Do **not** commit the `.env` file; `.env.example` documents required keys.
 - When deploying on Vercel, add the same variables so both build and runtime environments can reach Supabase and Groq.

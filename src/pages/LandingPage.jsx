@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, useScroll, useTransform, useSpring, AnimatePresence, useMotionValue, useInView } from 'framer-motion'
+import BrandLogo from '../components/BrandLogo'
 
 /* ─────────────────────────────────────────
    ANIMATED COUNTER
@@ -129,7 +130,7 @@ export default function LandingPage() {
     { icon: '📐', tag: 'LaTeX Precision', title: 'The Format IITians & NITians Use', body: 'LaTeX-rendered, pixel-perfect PDFs. The same clean, scannable format that top candidates use to get into FAANG companies globally.', accent: '#F59E0B', glow: 'rgba(245,158,11,0.1)' },
     { icon: '🏆', tag: 'FAANG Templates', title: 'Designed from 10,000+ Hired Resumes', body: 'We studied successful resumes from Google, Meta, Amazon, Flipkart & Razorpay hires. Every template is a distillation of what actually works.', accent: '#F43F5E', glow: 'rgba(244,63,94,0.1)' },
     { icon: '⏱️', tag: '60-Second Build', title: 'Faster Than Writing Your Name', body: 'Upload your old resume → AI scans → AI rewrites → Professional PDF ready. The whole process takes less time than making chai.', accent: '#06B6D4', glow: 'rgba(6,182,212,0.1)' },
-    { icon: '💎', tag: 'Transparent Pricing', title: 'Less Than a Samosa. Seriously.', body: 'No subscription. No trial. No upsells. Build free, preview free, pay ₹19 only when you download. We succeed only when you get hired.', accent: '#10B981', glow: 'rgba(16,185,129,0.1)' },
+    { icon: '💎', tag: 'Transparent Pricing', title: 'Currently 100% Free (Beta)', body: 'No subscription. No trial. No upsells. Build, preview, and download for free while we stress-test the platform.', accent: '#10B981', glow: 'rgba(16,185,129,0.1)' },
   ]
 
   const steps = [
@@ -137,12 +138,12 @@ export default function LandingPage() {
     { num: '02', title: 'Upload or Build Fresh', body: 'Drop your old resume OR fill our guided 5-section smart form. Both paths take under 3 minutes.', accent: '#8B5CF6' },
     { num: '03', title: 'Groq AI Enhances Everything', body: 'Keywords, formatting, bullet points, impact statements — AI rewrites every single line with precision.', accent: '#06B6D4' },
     { num: '04', title: 'Live ATS Score Reveal', body: 'Watch your score jump in real-time. See exactly what changed. Before vs after — completely transparent.', accent: '#00DC82' },
-    { num: '05', title: 'Preview Free. Pay ₹19. Download.', body: 'See the complete final resume before paying a single rupee. Zero risk. Pay only when you love it.', accent: '#F59E0B' },
+    { num: '05', title: 'Preview & Download Free (Beta)', body: 'See the complete final resume and download instantly. No payment needed during our open beta.', accent: '#F59E0B' },
   ]
 
   const testimonials = [
     { name: 'Rahul Mehta', role: 'SDE-2 at Amazon', before: 29, after: 97, quote: '6 mahine se rejections aa rahi thi. ResumeWala ne ek din mein sab badal diya. Amazon offer aaya aur main roya.', initials: 'RM', color: '#FF9900' },
-    { name: 'Priya Iyer', role: 'Software Engineer, Google', before: 31, after: 95, quote: 'Fresher thi, kuch samajh nahi aata tha. ₹19 mein itna powerful resume? This is genuinely unreal. Google interview aya.', initials: 'PI', color: '#4285F4' },
+    { name: 'Priya Iyer', role: 'Software Engineer, Google', before: 31, after: 95, quote: 'Fresher thi, kuch samajh nahi aata tha. Itna powerful resume bina kisi payment ke? This is genuinely unreal. Google interview aya.', initials: 'PI', color: '#4285F4' },
     { name: 'Karan Sharma', role: 'Data Analyst, Microsoft', before: 44, after: 96, quote: 'Tried Zety, Novoresume, Resume.io — nothing worked. One upload here and Microsoft shortlisted me in 4 days.', initials: 'KS', color: '#00A4EF' },
     { name: 'Ananya Das', role: 'Product Manager, Razorpay', before: 38, after: 94, quote: 'Non-tech background entering product. The AI understood context I never even wrote. Genuinely shocked by the output.', initials: 'AD', color: '#2D9CDB' },
     { name: 'Sneha Kulkarni', role: 'UX Designer, Swiggy', before: 37, after: 93, quote: 'Food-tech portfolio ko kaise polish karu yeh samajh nahi aa raha tha. ResumeWala ne meri case studies ko aise rephrase kiya ki Swiggy design panel seedha shortlist kar gaya.', initials: 'SK', color: '#FF6B6B' },
@@ -260,31 +261,13 @@ export default function LandingPage() {
         <div style={{ maxWidth: 1360, margin: '0 auto', padding: '0 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
 
           {/* Logo */}
-          <motion.div onClick={() => scrollTo('home')} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }}
-            style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
-            <div style={{ position: 'relative', width: 40, height: 40, filter: 'drop-shadow(0 0 14px rgba(99,102,241,0.65))' }}>
-              <svg width="40" height="40" viewBox="0 0 42 42" fill="none">
-                <rect width="42" height="42" rx="12" fill="url(#lg1)"/>
-                <rect width="42" height="42" rx="12" fill="rgba(0,0,0,0.15)"/>
-                <rect x="10" y="8" width="16" height="20" rx="3" fill="rgba(255,255,255,0.93)"/>
-                <rect x="13" y="13" width="10" height="1.5" rx="0.75" fill="#6366F1" opacity="0.7"/>
-                <rect x="13" y="16.5" width="10" height="1.5" rx="0.75" fill="#6366F1" opacity="0.5"/>
-                <rect x="13" y="20" width="6" height="1.5" rx="0.75" fill="#6366F1" opacity="0.3"/>
-                <circle cx="28" cy="28" r="9.5" fill="#050512"/>
-                <circle cx="28" cy="28" r="8" fill="url(#lg2)"/>
-                <path d="M24.5 28l2.5 2.5 4.5-5" stroke="white" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
-                <defs>
-                  <linearGradient id="lg1" x1="0" y1="0" x2="42" y2="42" gradientUnits="userSpaceOnUse"><stop stopColor="#6366F1"/><stop offset="1" stopColor="#4338CA"/></linearGradient>
-                  <linearGradient id="lg2" x1="20" y1="20" x2="36" y2="36" gradientUnits="userSpaceOnUse"><stop stopColor="#00DC82"/><stop offset="1" stopColor="#059669"/></linearGradient>
-                </defs>
-              </svg>
-            </div>
-            <div style={{ lineHeight: 1 }}>
-              <div className="rw-display" style={{ fontSize: 20, background: 'linear-gradient(135deg, #fff 40%, rgba(255,255,255,0.65))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-                Resume<span style={{ background: 'linear-gradient(135deg, #A5B4FC, #6366F1)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Wala</span>
-              </div>
-              <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.22)', letterSpacing: '0.16em', fontWeight: 700, marginTop: 2, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>AI RESUME PLATFORM</div>
-            </div>
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            style={{ flexShrink: 0 }}
+          >
+            <BrandLogo size={58} onClick={() => scrollTo('home')} />
           </motion.div>
 
           {/* Desktop Nav — Terminal Shape */}
@@ -359,7 +342,7 @@ export default function LandingPage() {
           <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55, delay: 0.1 }}
             style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.09)', borderRadius: 100, padding: '7px 18px 7px 7px', marginBottom: 32, backdropFilter: 'blur(16px)' }}>
             <div style={{ background: 'linear-gradient(135deg, #6366F1, #4F46E5)', borderRadius: 100, padding: '3px 10px', fontSize: 10.5, fontWeight: 700, color: 'white', letterSpacing: '0.06em' }}>NEW</div>
-            <span className="rw-body" style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', fontWeight: 600 }}>Groq AI · 94–97% ATS Score · Only ₹19</span>
+            <span className="rw-body" style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', fontWeight: 600 }}>Groq AI · 94–97% ATS Score · Free Beta Access</span>
           </motion.div>
 
           {/* H1 */}
@@ -376,7 +359,7 @@ export default function LandingPage() {
             className="rw-body hero-sub" style={{ fontSize: 18.5, color: 'rgba(255,255,255,0.48)', maxWidth: 600, margin: '0 auto 44px', lineHeight: 1.75, fontWeight: 400 }}>
             Students aur freshers ke liye India ka most powerful AI resume builder. Upload karo,{' '}
             <span style={{ color: 'rgba(255,255,255,0.88)', fontWeight: 700 }}>94–97% ATS score guaranteed</span>,
-            download for just <span className="grad-warm" style={{ fontWeight: 900, fontFamily: "'Outfit', sans-serif" }}>₹19</span>.
+            aur hamare limited-time beta mein bilkul free download karo.
           </motion.p>
 
           {/* CTAs */}
@@ -402,7 +385,7 @@ export default function LandingPage() {
               { value: 12847, suffix: '+', label: 'Resumes Built', icon: '📄', color: '#818CF8' },
               { value: 8392, suffix: '+', label: 'Users Hired', icon: '🎯', color: '#00DC82' },
               { value: 96, suffix: '%', label: 'Avg ATS Score', icon: '⚡', color: '#F59E0B' },
-              { value: 19, prefix: '₹', suffix: '', label: 'One-time Price', icon: '💎', color: '#F43F5E' },
+              { value: 0, prefix: '', suffix: '', label: 'Limited-Time Price (Free)', icon: '🆓', color: '#2DD4BF' },
             ].map((s, i) => (
               <motion.div key={i} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.6 + i * 0.08, duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }}
                 style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 18, padding: '18px 10px', textAlign: 'center', backdropFilter: 'blur(12px)' }}>
@@ -641,12 +624,12 @@ export default function LandingPage() {
           <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} style={{ marginBottom: 52 }}>
             <div className="section-pill" style={{ background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.2)', color: '#A5B4FC', marginBottom: 20 }}>
               <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 1l1.2 3.2H9.5L6.4 6.4l1.1 3.3L5 7.8 2.5 9.7l1.1-3.3L.5 4.2h3.3L5 1z" stroke="#A5B4FC" strokeWidth="0.5" fill="none"/></svg>
-              Simple Pricing
+              Beta Access
             </div>
             <h2 className="rw-display" style={{ fontSize: 'clamp(34px,5vw,58px)', marginBottom: 16, lineHeight: 1.04 }}>
-              Less Than a Samosa.<br /><span className="grad-warm">₹19. Period.</span>
+              100% Free Beta.<br /><span className="grad-warm">Unlimited Downloads.</span>
             </h2>
-            <p className="rw-body" style={{ fontSize: 17, color: 'rgba(255,255,255,0.38)', maxWidth: 480, margin: '0 auto', lineHeight: 1.7 }}>No subscription. No trial. Build free, preview free, pay ₹19 only when you download your final PDF.</p>
+            <p className="rw-body" style={{ fontSize: 17, color: 'rgba(255,255,255,0.38)', maxWidth: 480, margin: '0 auto', lineHeight: 1.7 }}>We are in open beta, so every feature — build, preview, ATS boost, and PDF download — is completely free for a limited time.</p>
           </motion.div>
 
           <motion.div initial={{ opacity: 0, y: 36, scale: 0.97 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
@@ -657,16 +640,16 @@ export default function LandingPage() {
             <div style={{ position: 'relative' }}>
               <div style={{ display: 'inline-flex', alignItems: 'center', gap: 7, background: 'rgba(0,220,130,0.09)', border: '1px solid rgba(0,220,130,0.2)', padding: '6px 16px', borderRadius: 100, fontSize: 12.5, color: '#34D399', marginBottom: 28, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600 }}>
                 <div style={{ width: 7, height: 7, borderRadius: '50%', background: '#00DC82' }} />
-                No subscription · Pay once at download
+                Open beta · Free downloads for a limited time
               </div>
 
               <div style={{ marginBottom: 10 }}>
-                <span className="rw-display" style={{ fontSize: 108, lineHeight: 1, background: 'linear-gradient(135deg, #00DC82, #36E4DA)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', letterSpacing: '-0.05em' }}>₹19</span>
+                <span className="rw-display" style={{ fontSize: 108, lineHeight: 1, background: 'linear-gradient(135deg, #00DC82, #36E4DA)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', letterSpacing: '-0.05em' }}>Free</span>
               </div>
-              <p className="rw-body" style={{ color: 'rgba(255,255,255,0.3)', fontSize: 15, marginBottom: 40 }}>One-time · Per resume download · No tricks, ever</p>
+              <p className="rw-body" style={{ color: 'rgba(255,255,255,0.3)', fontSize: 15, marginBottom: 40 }}>Unlimited resume downloads during beta · No payment info required · No tricks</p>
 
               <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 9, marginBottom: 44 }}>
-                {['✅ 94–97% ATS Score','✅ Groq AI Enhanced','✅ LaTeX PDF Format','✅ FAANG-Ready Template','✅ Instant Download','✅ Preview Before Paying','✅ Works for Freshers','✅ No Subscription Ever'].map((item, i) => (
+                {['✅ 94–97% ATS Score','✅ Groq AI Enhanced','✅ LaTeX PDF Format','✅ FAANG-Ready Template','✅ Instant Download','✅ Preview Everything Free','✅ Unlimited Beta Downloads','✅ No Payment Info Needed'].map((item, i) => (
                   <div key={i} className="rw-body" style={{ fontSize: 13, color: 'rgba(255,255,255,0.58)', background: 'rgba(255,255,255,0.04)', padding: '7px 14px', borderRadius: 100, border: '1px solid rgba(255,255,255,0.07)', fontWeight: 500 }}>
                     {item}
                   </div>
@@ -679,7 +662,7 @@ export default function LandingPage() {
                 Start Building — It's Free
                 <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M3 7.5h9M9 4.5l3 3-3 3" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </MagneticBtn>
-              <p className="rw-body" style={{ color: 'rgba(255,255,255,0.17)', fontSize: 12.5, marginTop: 16 }}>No credit card needed · Preview 100% free · Pay ₹19 only at download</p>
+              <p className="rw-body" style={{ color: 'rgba(255,255,255,0.17)', fontSize: 12.5, marginTop: 16 }}>No credit card needed · Everything free in beta · Limited slots available</p>
             </div>
           </motion.div>
         </div>
@@ -695,7 +678,7 @@ export default function LandingPage() {
               Stop Getting Filtered Out.<br /><span className="grad-text">Start Getting Interviews.</span>
             </h2>
             <p className="rw-body" style={{ color: 'rgba(255,255,255,0.4)', fontSize: 16, marginBottom: 32, maxWidth: 480, margin: '0 auto 32px', lineHeight: 1.7 }}>
-              12,847 resumes built · 8,392 users hired · One platform · ₹19
+              12,847 resumes built · 8,392 users hired · Open beta live
             </p>
             <button onClick={() => navigate('/auth?mode=signup')} className="btn-p"
               style={{ padding: '16px 42px', fontSize: 16, display: 'inline-flex', alignItems: 'center', gap: 10 }}>
@@ -711,28 +694,7 @@ export default function LandingPage() {
         <div style={{ maxWidth: 1360, margin: '0 auto' }}>
           <div className="footer-inner" style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 20, marginBottom: 28 }}>
             {/* Logo */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
-              <svg width="30" height="30" viewBox="0 0 42 42" fill="none">
-                <rect width="42" height="42" rx="11" fill="url(#flg1)"/>
-                <rect x="10" y="8" width="16" height="20" rx="3" fill="rgba(255,255,255,0.9)"/>
-                <rect x="13" y="13" width="10" height="1.5" rx="0.75" fill="#6366F1" opacity="0.7"/>
-                <rect x="13" y="16.5" width="10" height="1.5" rx="0.75" fill="#6366F1" opacity="0.5"/>
-                <rect x="13" y="20" width="6" height="1.5" rx="0.75" fill="#6366F1" opacity="0.3"/>
-                <circle cx="28" cy="28" r="9.5" fill="#050512"/>
-                <circle cx="28" cy="28" r="7.5" fill="url(#flg2)"/>
-                <path d="M24.5 28l2.5 2.5 4.5-5" stroke="white" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
-                <defs>
-                  <linearGradient id="flg1" x1="0" y1="0" x2="42" y2="42" gradientUnits="userSpaceOnUse"><stop stopColor="#6366F1"/><stop offset="1" stopColor="#4338CA"/></linearGradient>
-                  <linearGradient id="flg2" x1="20" y1="20" x2="36" y2="36" gradientUnits="userSpaceOnUse"><stop stopColor="#00DC82"/><stop offset="1" stopColor="#059669"/></linearGradient>
-                </defs>
-              </svg>
-              <div>
-                <div className="rw-display" style={{ fontSize: 16, letterSpacing: '-0.04em', background: 'linear-gradient(135deg, white, rgba(255,255,255,0.55))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-                  Resume<span style={{ background: 'linear-gradient(135deg, #A5B4FC, #6366F1)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Wala</span>
-                </div>
-                <div className="rw-body" style={{ fontSize: 9, color: 'rgba(255,255,255,0.2)', letterSpacing: '0.14em', fontWeight: 700 }}>AI RESUME PLATFORM</div>
-              </div>
-            </div>
+            <BrandLogo size={46} glow={false} />
 
             {/* Footer nav */}
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>

@@ -1,16 +1,62 @@
+/**
+ * Payment flow paused (March 2026): downloads are free during beta.
+ * We keep the original Razorpay modal implementation below, wrapped in comments,
+ * so it can be restored quickly once pricing returns.
+ */
+const PaymentPlaceholder = () => {
+  if (import.meta.env?.DEV) {
+    console.warn('Payment component rendered while payments are disabled. Returning null.')
+  }
+  return null
+}
+
+export default PaymentPlaceholder
+
+/*
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { smartPay, PAYMENT_STATUS, getPaymentStatusMessage } from '../../api/payment'
 
 export default function Payment({ user, resumeTitle, onSuccess, onClose }) {
   const [processing, setProcessing] = useState(false)
+  const [status, setStatus] = useState(PAYMENT_STATUS.IDLE)
+  const [error, setError] = useState('')
 
   const handlePay = async () => {
     if (processing) return
+    setError('')
     setProcessing(true)
-    await new Promise(r => setTimeout(r, 1200))
-    setProcessing(false)
-    onSuccess?.()
+    setStatus(PAYMENT_STATUS.LOADING)
+
+    try {
+      await smartPay({
+        user,
+        resumeTitle,
+        onSuccess: (meta) => {
+          setProcessing(false)
+          setStatus(PAYMENT_STATUS.SUCCESS)
+          onSuccess?.(meta)
+        },
+        onFailure: (message) => {
+          setProcessing(false)
+          setStatus(PAYMENT_STATUS.FAILED)
+          setError(message || 'Payment failed. Please try again.')
+        },
+        onDismiss: () => {
+          setProcessing(false)
+          setStatus(PAYMENT_STATUS.DISMISSED)
+          onClose?.()
+        },
+      })
+    } catch (err) {
+      console.error('Unable to start Razorpay checkout:', err)
+      setProcessing(false)
+      setStatus(PAYMENT_STATUS.FAILED)
+      setError(err.message || 'Unable to start payment gateway. Please try again.')
+    }
   }
+
+  const statusMessage = getPaymentStatusMessage(status)
 
   return (
     <motion.div
@@ -68,7 +114,7 @@ export default function Payment({ user, resumeTitle, onSuccess, onClose }) {
             {processing ? (
               <>
                 <motion.span animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1, ease: 'linear' }} style={{ width: 16, height: 16, border: '2px solid rgba(255,255,255,0.4)', borderTopColor: 'white', borderRadius: '50%' }} />
-                Processing...
+                {status === PAYMENT_STATUS.SUCCESS ? 'Processing...' : 'Opening Razorpay...'}
               </>
             ) : (
               <>
@@ -78,11 +124,24 @@ export default function Payment({ user, resumeTitle, onSuccess, onClose }) {
             )}
           </button>
 
+          {(statusMessage || error) && (
+            <div style={{ marginTop: 12, textAlign: 'center' }}>
+              {statusMessage && (
+                <p style={{ fontSize: 12.5, color: 'rgba(255,255,255,0.55)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{statusMessage}</p>
+              )}
+              {error && (
+                <p style={{ fontSize: 12.5, color: '#F87171', marginTop: 4, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{error}</p>
+              )}
+            </div>
+          )}
+
           <p style={{ textAlign: 'center', fontSize: 12, color: 'rgba(255,255,255,0.35)', marginTop: 14, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-            Powered by Mock Gateway · Secure & encrypted · Instant confirmation
+            Payments processed via Razorpay · Secure · Instant confirmation
           </p>
         </div>
       </motion.div>
     </motion.div>
   )
 }
+
+  */

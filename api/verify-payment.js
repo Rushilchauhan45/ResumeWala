@@ -7,7 +7,7 @@ import crypto from 'crypto'
 
 const RAZORPAY_KEY_ID     = process.env.RAZORPAY_KEY_ID
 const RAZORPAY_KEY_SECRET = process.env.RAZORPAY_KEY_SECRET
-const AMOUNT_PAISE        = 1900   // ₹9
+const AMOUNT_PAISE        = 1900   // ₹19
 const CURRENCY            = 'INR'
 
 export default async function handler(req, res) {

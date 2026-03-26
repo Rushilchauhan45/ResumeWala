@@ -1,5 +1,3 @@
-// Mock Groq API helpers so the Upload flow works end-to-end without backend deps
-
 const delay = (ms = 600) => new Promise(resolve => setTimeout(resolve, ms))
 
 const baseEnhancedResume = {
@@ -32,8 +30,30 @@ const baseEnhancedResume = {
   },
 }
 
-export const parseAndEnhanceResumeText = async (rawText = '', jobDescription = '') => {
-  await delay()
+const callGroqEndpoint = async (payload) => {
+  try {
+    const response = await fetch('/api/enhance-resume', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    })
+
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({}))
+      throw new Error(err.error || `Groq endpoint error: ${response.status}`)
+    }
+
+    const data = await response.json()
+    if (data.success && data.enhancedData) return data.enhancedData
+
+    throw new Error(data.error || 'Groq returned empty payload')
+  } catch (err) {
+    console.warn('Groq endpoint unavailable, using fallback data', err)
+    return null
+  }
+}
+
+const buildFallbackFromText = (rawText = '', jobDescription = '') => {
   const firstLine = rawText.split(/\n|,/)[0]?.trim()
   const derivedName = firstLine && firstLine.length < 60 ? firstLine : baseEnhancedResume.personalInfo.fullName
 
@@ -47,31 +67,44 @@ export const parseAndEnhanceResumeText = async (rawText = '', jobDescription = '
         : baseEnhancedResume.personalInfo.summary,
     },
     meta: {
-      source: 'upload-text',
+      source: 'upload-text-fallback',
       matchedJD: jobDescription.length > 0,
       enhancedAt: new Date().toISOString(),
+      fallback: true,
     },
   }
 }
 
+const buildFallbackFromData = (resumeData = {}, jobDescription = '') => ({
+  ...baseEnhancedResume,
+  ...resumeData,
+  personalInfo: {
+    ...baseEnhancedResume.personalInfo,
+    ...resumeData?.personalInfo,
+    summary: jobDescription
+      ? `${resumeData?.personalInfo?.summary || baseEnhancedResume.personalInfo.summary} Tailored for: ${jobDescription.slice(0, 90)}...`
+      : resumeData?.personalInfo?.summary || baseEnhancedResume.personalInfo.summary,
+  },
+  meta: {
+    source: 'builder-data-fallback',
+    matchedJD: jobDescription.length > 0,
+    enhancedAt: new Date().toISOString(),
+    fallback: true,
+  },
+})
+
+export const parseAndEnhanceResumeText = async (rawText = '', jobDescription = '') => {
+  await delay(400)
+  const enhanced = await callGroqEndpoint({ rawText, jobDescription, mode: 'parse' })
+  if (enhanced) return enhanced
+  return buildFallbackFromText(rawText, jobDescription)
+}
+
 export const enhanceResumeWithAI = async (resumeData = {}, jobDescription = '') => {
-  await delay()
-  return {
-    ...baseEnhancedResume,
-    ...resumeData,
-    personalInfo: {
-      ...baseEnhancedResume.personalInfo,
-      ...resumeData?.personalInfo,
-      summary: jobDescription
-        ? `${resumeData?.personalInfo?.summary || baseEnhancedResume.personalInfo.summary} Tailored for: ${jobDescription.slice(0, 90)}...`
-        : resumeData?.personalInfo?.summary || baseEnhancedResume.personalInfo.summary,
-    },
-    meta: {
-      source: 'builder-data',
-      matchedJD: jobDescription.length > 0,
-      enhancedAt: new Date().toISOString(),
-    },
-  }
+  await delay(400)
+  const enhanced = await callGroqEndpoint({ resumeData, jobDescription, mode: 'enhance' })
+  if (enhanced) return enhanced
+  return buildFallbackFromData(resumeData, jobDescription)
 }
 
 export default {

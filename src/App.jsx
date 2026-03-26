@@ -7,10 +7,12 @@ import DashboardPage from './pages/DashboardPage'
 import BuilderPage from './pages/BuilderPage'
 import UploadPage from './pages/UploadPage'
 import ProtectedRoute from './components/ProtectedRoute'
+import CustomCursor from './components/CustomCursor'
 
 function App() {
   return (
     <AuthProvider>
+      <CustomCursor />
       <Router>
         <Toaster
           position="top-right"

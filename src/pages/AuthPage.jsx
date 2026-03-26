@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAuth } from '../context/AuthContext'
 import toast from 'react-hot-toast'
+import BrandLogo from '../components/BrandLogo'
 
 
 
@@ -112,7 +113,7 @@ export default function AuthPage() {
     { icon: '⚡', text: 'Groq AI-powered enhancement' },
     { icon: '🎯', text: '94–97% ATS score guaranteed' },
     { icon: '📐', text: 'LaTeX professional PDF output' },
-    { icon: '💎', text: 'Only ₹19 to download — no subscription' },
+    { icon: '💎', text: 'Free downloads during beta — no subscription' },
   ]
 
   return (
@@ -157,30 +158,13 @@ export default function AuthPage() {
 
         <div style={{ position: 'relative', zIndex: 1, maxWidth: 480 }}>
           {/* Logo */}
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }}
-            onClick={() => navigate('/')} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 10, marginBottom: 64 }}>
-            <div style={{ filter: 'drop-shadow(0 0 14px rgba(99,102,241,0.65))' }}>
-              <svg width="38" height="38" viewBox="0 0 42 42" fill="none">
-                <rect width="42" height="42" rx="12" fill="url(#alg1)"/>
-                <rect x="10" y="8" width="16" height="20" rx="3" fill="rgba(255,255,255,0.93)"/>
-                <rect x="13" y="13" width="10" height="1.5" rx="0.75" fill="#6366F1" opacity="0.7"/>
-                <rect x="13" y="16.5" width="10" height="1.5" rx="0.75" fill="#6366F1" opacity="0.5"/>
-                <rect x="13" y="20" width="6" height="1.5" rx="0.75" fill="#6366F1" opacity="0.3"/>
-                <circle cx="28" cy="28" r="9.5" fill="#050512"/>
-                <circle cx="28" cy="28" r="8" fill="url(#alg2)"/>
-                <path d="M24.5 28l2.5 2.5 4.5-5" stroke="white" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
-                <defs>
-                  <linearGradient id="alg1" x1="0" y1="0" x2="42" y2="42" gradientUnits="userSpaceOnUse"><stop stopColor="#6366F1"/><stop offset="1" stopColor="#4338CA"/></linearGradient>
-                  <linearGradient id="alg2" x1="20" y1="20" x2="36" y2="36" gradientUnits="userSpaceOnUse"><stop stopColor="#00DC82"/><stop offset="1" stopColor="#059669"/></linearGradient>
-                </defs>
-              </svg>
-            </div>
-            <div>
-              <div className="rw-display" style={{ fontSize: 20, background: 'linear-gradient(135deg, #fff 40%, rgba(255,255,255,0.6))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-                Resume<span style={{ background: 'linear-gradient(135deg, #A5B4FC, #6366F1)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Wala</span>
-              </div>
-              <div className="rw-body" style={{ fontSize: 9, color: 'rgba(255,255,255,0.22)', letterSpacing: '0.16em', fontWeight: 700, marginTop: 2 }}>AI RESUME PLATFORM</div>
-            </div>
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            style={{ marginBottom: 64, display: 'inline-flex' }}
+          >
+            <BrandLogo size={60} onClick={() => navigate('/')} />
           </motion.div>
 
           {/* Headline */}
@@ -216,7 +200,7 @@ export default function AuthPage() {
               {Array(5).fill(0).map((_,i) => <svg key={i} width="12" height="12" viewBox="0 0 12 12" fill="#F59E0B"><path d="M6 1l1.2 3.2H10L7.4 6.4l.9 3.3L6 7.8 3.7 9.7l.9-3.3L2 4.2h2.8L6 1z"/></svg>)}
             </div>
             <p className="rw-body" style={{ fontSize: 13.5, color: 'rgba(255,255,255,0.5)', lineHeight: 1.7, fontStyle: 'italic', marginBottom: 12 }}>
-              "My ATS score went from 31% to 95%. Got Google's call within 2 weeks. Best ₹19 I ever spent."
+              "My ATS score went from 31% to 95%. Got Google's call within 2 weeks. Best career decision I ever made."
             </p>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <div style={{ width: 30, height: 30, borderRadius: '50%', background: 'rgba(66,133,244,0.2)', border: '1px solid rgba(66,133,244,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 700, color: '#4285F4' }}>PI</div>
@@ -245,7 +229,7 @@ export default function AuthPage() {
 
           {/* Mobile logo */}
           <div className="rw-body" style={{ display: 'none', marginBottom: 32 }}>
-            <div className="rw-display" style={{ fontSize: 22 }}>ResumeWala</div>
+            <BrandLogo size={44} />
           </div>
 
           {/* Tab switcher */}
