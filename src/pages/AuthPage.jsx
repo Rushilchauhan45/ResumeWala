@@ -47,6 +47,7 @@ export default function AuthPage() {
   const [loading, setLoading] = useState(false)
   const [form, setForm] = useState({ name: '', email: '', password: '', confirm: '' })
   const [errors, setErrors] = useState({})
+  const [providerLoading, setProviderLoading] = useState(null)
   const navigate = useNavigate()
   const { login, signup, loginWithProvider } = useAuth()
 
@@ -93,6 +94,19 @@ export default function AuthPage() {
   }
 
   const set = (k, v) => { setForm(f => ({ ...f, [k]: v })); setErrors(e => ({ ...e, [k]: '' })) }
+
+  const handleProviderLogin = async (provider) => {
+    try {
+      setProviderLoading(provider)
+      toast.loading('Redirecting to provider…', { id: 'oauth-redirect' })
+      await loginWithProvider(provider)
+    } catch (error) {
+      const message = error?.message || 'Unable to start social login. Check your OAuth settings.'
+      toast.error(message, { id: 'oauth-redirect' })
+    } finally {
+      setProviderLoading(null)
+    }
+  }
 
   const features = [
     { icon: '⚡', text: 'Groq AI-powered enhancement' },
@@ -260,11 +274,31 @@ export default function AuthPage() {
 
           {/* Social buttons */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 24 }}>
-            <button className="btn-social" onClick={() => loginWithProvider('google')}>
-              <GoogleIcon /> Google
+            <button type="button" className="btn-social" onClick={() => handleProviderLogin('google')} disabled={!!providerLoading}>
+              {providerLoading === 'google' ? (
+                <>
+                  <motion.div animate={{ rotate: 360 }} transition={{ duration: 0.8, repeat: Infinity, ease: 'linear' }}
+                    style={{ width: 16, height: 16, border: '2px solid rgba(255,255,255,0.3)', borderTopColor: 'white', borderRadius: '50%' }} />
+                  Connecting…
+                </>
+              ) : (
+                <>
+                  <GoogleIcon /> Google
+                </>
+              )}
             </button>
-            <button className="btn-social" onClick={() => loginWithProvider('github')}>
-              <GitHubIcon /> GitHub
+            <button type="button" className="btn-social" onClick={() => handleProviderLogin('github')} disabled={!!providerLoading}>
+              {providerLoading === 'github' ? (
+                <>
+                  <motion.div animate={{ rotate: 360 }} transition={{ duration: 0.8, repeat: Infinity, ease: 'linear' }}
+                    style={{ width: 16, height: 16, border: '2px solid rgba(255,255,255,0.3)', borderTopColor: 'white', borderRadius: '50%' }} />
+                  Connecting…
+                </>
+              ) : (
+                <>
+                  <GitHubIcon /> GitHub
+                </>
+              )}
             </button>
           </div>
 

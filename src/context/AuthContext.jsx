@@ -76,13 +76,22 @@ export const AuthProvider = ({ children }) => {
 
   const loginWithProvider = async (provider) => {
     if (!supabase) throw new Error('Supabase client is not configured')
-    const { error } = await supabase.auth.signInWithOAuth({
+    const redirectTo = typeof window !== 'undefined'
+      ? `${window.location.origin}/dashboard`
+      : undefined
+
+    const { data, error } = await supabase.auth.signInWithOAuth({
       provider,
       options: {
-        redirectTo: `${window.location.origin}/dashboard`,
+        redirectTo,
       },
     })
+
     if (error) throw error
+
+    if (data?.url && typeof window !== 'undefined') {
+      window.location.href = data.url
+    }
   }
 
   const logout = async () => {
