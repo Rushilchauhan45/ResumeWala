@@ -1,8 +1,10 @@
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAuth } from '../context/AuthContext'
 import toast from 'react-hot-toast'
+
+
 
 /* ── Eye Icon ── */
 const EyeIcon = ({ open }) => (
@@ -46,7 +48,7 @@ export default function AuthPage() {
   const [form, setForm] = useState({ name: '', email: '', password: '', confirm: '' })
   const [errors, setErrors] = useState({})
   const navigate = useNavigate()
-  const { login, signup } = useAuth()
+  const { login, signup, loginWithProvider } = useAuth()
 
   const validate = () => {
     const e = {}
@@ -62,19 +64,32 @@ export default function AuthPage() {
     e.preventDefault()
     if (!validate()) return
     setLoading(true)
-    await new Promise(r => setTimeout(r, 1200))
-    const userData = {
-      id: Date.now().toString(),
-      name: form.name || form.email.split('@')[0],
-      email: form.email,
-      createdAt: new Date().toISOString(),
-      plan: 'free',
+    try {
+      if (mode === 'login') {
+        await login(form.email, form.password)
+        toast.success('Welcome back! 👋')
+        navigate('/dashboard')
+      } else {
+        const { requiresEmailConfirmation } = await signup({
+          name: form.name,
+          email: form.email,
+          password: form.password,
+        })
+
+        if (requiresEmailConfirmation) {
+          toast.success('Check your inbox to confirm your email before signing in. 📫')
+          setMode('login')
+        } else {
+          toast.success(`Account created! Let's build your resume 🚀`)
+          navigate('/dashboard')
+        }
+      }
+    } catch (error) {
+      const message = error?.message || 'Something went wrong. Please try again.'
+      toast.error(message)
+    } finally {
+      setLoading(false)
     }
-    if (mode === 'login') login(userData)
-    else signup(userData)
-    toast.success(mode === 'login' ? `Welcome back! 👋` : `Account created! Let's build your resume 🚀`)
-    navigate('/dashboard')
-    setLoading(false)
   }
 
   const set = (k, v) => { setForm(f => ({ ...f, [k]: v })); setErrors(e => ({ ...e, [k]: '' })) }
@@ -245,10 +260,10 @@ export default function AuthPage() {
 
           {/* Social buttons */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 24 }}>
-            <button className="btn-social" onClick={() => toast('Google login coming soon! Use email for now.', { icon: '🔜' })}>
+            <button className="btn-social" onClick={() => loginWithProvider('google')}>
               <GoogleIcon /> Google
             </button>
-            <button className="btn-social" onClick={() => toast('GitHub login coming soon! Use email for now.', { icon: '🔜' })}>
+            <button className="btn-social" onClick={() => loginWithProvider('github')}>
               <GitHubIcon /> GitHub
             </button>
           </div>

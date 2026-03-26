@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
+import toast from 'react-hot-toast'
 import { useAuth } from '../context/AuthContext'
 
 /* ─────────────────────────────────────────
@@ -236,9 +237,13 @@ export default function DashboardPage() {
     setResumes(r => r.filter(x => x.id !== id))
   }
 
-  const handleLogout = () => {
-    logout()
-    navigate('/')
+  const handleLogout = async () => {
+    try {
+      await logout()
+      navigate('/')
+    } catch (error) {
+      toast.error(error?.message || 'Unable to log out. Please try again.')
+    }
   }
 
   const userName = user?.name || user?.email?.split('@')[0] || 'User'
